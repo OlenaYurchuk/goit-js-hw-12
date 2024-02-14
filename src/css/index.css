@@ -169,3 +169,14 @@ section {
 .iziToast > .iziToast-close {
   background-color: #fff;
 }
+
+.more-photos {
+  display: block;
+  width: 200px;
+  height: 40px;
+  color: black;
+}
+
+.more-photos.hidden {
+  display: none;
+}
