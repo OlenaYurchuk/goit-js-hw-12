@@ -62,15 +62,14 @@ async function fetchPhotos(searchItems, page) {
         const response = await axios.get(`?${params}`);
         const data = response.data;
 
-         if (data.hits.length === 0) {
-             loaderEl.classList.add('hidden');
-             loadMoreBtn.classList.add('hidden');
+        if (data.hits.length === 0) {
+            loaderEl.classList.add('hidden');
+            loadMoreBtn.classList.add('hidden');
             return iziToast.error({
                 position: 'topRight',
                 message: 'Sorry, there are no images matching <br/> your search query. Please try again!'
             });
-            
-         }
+        }
         
         createCardsList(data.hits);
         lightbox.refresh();
