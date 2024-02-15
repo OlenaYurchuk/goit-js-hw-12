@@ -33,7 +33,6 @@ function onSearchForm(event) {
     }
 
     fetchPhotos(searchItems, currentPage)   
-    loadMoreBtn.classList.add('hidden');
     searchFormEl.reset();
 }
 
@@ -42,27 +41,37 @@ loadMoreBtn.addEventListener('click', onLoadMore);
 async function onLoadMore() {
     currentPage += 1;
     await fetchPhotos(searchItems, currentPage);
-    
-    const totalPages = Math.ceil(100 / perPage);
-    if (currentPage > totalPages) {
-        loadMoreBtn.classList.add('hidden');
-        return iziToast.error({
-            position: 'topRight',
-            message: 'We are sorry, but you have reached the end of search results'
-        });  
-    }
+
+    const cardHeight = galleryEl.firstElementChild.getBoundingClientRect().height;
+    smoothScrollBy(cardHeight * 2);
 }
 
 async function fetchPhotos(searchItems, page) {
     const params = new URLSearchParams({
-        per_page: perPage,
-        page: currentPage
+        key: KEY,
+        q: searchItems,
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: 'true',
+        page: currentPage,
+        per_page: perPage
     });
 
     try {
         loaderEl.classList.remove('hidden');
-        const response = await axios.get(`?key=${KEY}&q=${searchItems}&image_type=photo&orientation=horizontal&safesearch=true&${params}`);
+        const response = await axios.get(`?${params}`);
         const data = response.data;
+
+         if (data.hits.length === 0) {
+             loaderEl.classList.add('hidden');
+             loadMoreBtn.classList.add('hidden');
+            return iziToast.error({
+                position: 'topRight',
+                message: 'Sorry, there are no images matching <br/> your search query. Please try again!'
+            });
+            
+         }
+        
         createCardsList(data.hits);
         lightbox.refresh();
         loaderEl.classList.add('hidden');
@@ -73,20 +82,26 @@ async function fetchPhotos(searchItems, page) {
             loaderEl.classList.add('hidden');
         } else {
             loadMoreBtn.classList.add('hidden');
-        }
-
-        if (data.hits.length === 0) {
-            loaderEl.classList.add('hidden');
-            iziToast.error({
-                position: 'topRight',
-                message: 'Sorry, there are no images matching <br/> your search query. Please try again!'
-            });
+            return iziToast.error({
+                 position: 'topRight',
+                 message: 'We are sorry, but you have reached </br> the end of search results'
+            }); 
         }
     }
     catch (error) {
         console.error('Error fetching images:', error);
+    }
+    finally {
         loaderEl.classList.add('hidden');
     }
+}
+
+function smoothScrollBy(distance) {
+    window.scrollBy({
+        top: distance,
+        left: 0,
+        behavior: 'smooth',
+    });
 }
 
 function clearAll() {
