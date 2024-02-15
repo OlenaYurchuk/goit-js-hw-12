@@ -12,9 +12,6 @@ const galleryEl = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('.more-photos');
 const loaderEl = document.querySelector('.loader');
 
-loaderEl.classList.add('hidden');
-loadMoreBtn.classList.add('hidden');
-
 let searchItems = '';
 let lightbox = new SimpleLightbox('.gallery a', {});
 
@@ -71,7 +68,9 @@ async function fetchPhotos(searchItems, page) {
         loaderEl.classList.add('hidden');
 
         if ((page - 1) * perPage + data.hits.length < data.totalHits) {
+            loaderEl.classList.remove('hidden');
             loadMoreBtn.classList.remove('hidden');
+            loaderEl.classList.add('hidden');
         } else {
             loadMoreBtn.classList.add('hidden');
         }

@@ -16,6 +16,7 @@ ol {
 section {
   display: flex;
   flex-direction: column;
+  margin-bottom: 100px;
 }
 
 .search-field {
@@ -69,6 +70,7 @@ section {
   justify-content: center;
   align-items: flex-start;
   gap: 24px;
+  margin-bottom: 30px;
 }
 
 .gallery-item {
@@ -172,9 +174,21 @@ section {
 
 .more-photos {
   display: block;
-  width: 200px;
+  border-radius: 8px;
+  padding: 8px 16px;
   height: 40px;
-  color: black;
+  color: white;
+  background-color: #4e75ff;
+  border: transparent;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.04em;
+}
+
+.more-photos:hover {
+  background-color: #6c8cff;
 }
 
 .more-photos.hidden {
