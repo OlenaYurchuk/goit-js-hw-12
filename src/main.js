@@ -1,4 +1,5 @@
 import { KEY } from "./js/pixabay-api";
+import { galleryEl, createCardsList } from "./js/render-functions";
 
 import axios from 'axios';
 import SimpleLightbox from 'simplelightbox';
@@ -8,7 +9,6 @@ import "izitoast/dist/css/iziToast.min.css";
 
 const searchFormEl = document.querySelector('.search-form');
 const inputEl = document.querySelector('.search-field');
-const galleryEl = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('.more-photos');
 const loaderEl = document.querySelector('.loader');
 
@@ -88,27 +88,6 @@ async function fetchPhotos(searchItems, page) {
         loaderEl.classList.add('hidden');
     }
 }
-
-function createCardsList(cards) {
-    
-    const markup = cards.map(card => 
-        `<li class="gallery-item">
-             <div class="card-top">
-            <a class="card-link" href="${card.largeImageURL}">
-                <img class="card-image" src="${card.webformatURL}" alt="${card.tags}">
-            </a>
-        </div>
-        <div class="card-bottom">
-            <p class="card-likes">Likes <span class="card-value">${card.likes}</span></p>
-            <p class="card-views">Views <span class="card-value">${card.views}</span></p>
-            <p class="card-comments">Comments <span class="card-value">${card.comments}</span></p>
-            <p class="card-downloads">Downloads <span class="card-value">${card.downloads}</span></p>
-        </div>
-        </li>`
-    ).join('');
-
-    galleryEl.insertAdjacentHTML('beforeend', markup);
-};
 
 function clearAll() {
     galleryEl.innerHTML = '';
